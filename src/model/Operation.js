@@ -9,12 +9,11 @@
 export const Operation = {
   id: '',
   title: '',
-  briefing: '',
+  description: '',
   priority: 'medium',
   status: 'draft',
   
-  startAt: null,
-  endAt: null,
+  alerts: [],              // Array of alert IDs related to this operation
   
   createdAt: '',
   

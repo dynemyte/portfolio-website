@@ -28,8 +28,14 @@ Defines the operative’s identity.
 - codename
 - avatarUrl
 - bio / quirks
-- specialties
+- role
 - createdAt
+
+**Rules:**
+
+- Each operative has exactly one fixed role.
+- An operative’s role never changes per mission.
+- Operatives cannot perform multiple roles or switch roles.
 
 ---
 
@@ -114,12 +120,7 @@ This is how real systems model people assigned to projects or cases.
 - operationId
 - operativeId
 
-- role  
-  Example roles:
-  - medic
-  - hacker
-  - scout
-  - muscle
+- role (derived from the operative’s role; not editable)
 
 - assignedAt
 

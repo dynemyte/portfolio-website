@@ -11,17 +11,15 @@ export const Operative = {
   id: '',
   codename: '',
   avatarUrl: '',
-  bio: null,
-  quirks: null,
-  specialties: [],
+  profile: '',
+  role: '',
   createdAt: '',
 
   // Current State (Changes Often)
   status: 'available',
-  currentOperationId: null,
-  lastSeenAt: '',
   health: 100,
-  energy: 100,
+  alerts: [],
+  location: '',              // Current location of the operative
 };
 
 /**

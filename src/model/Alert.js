@@ -16,12 +16,6 @@ export const Alert = {
   
   createdAt: '',
   
-  // Optional context references
-  operationId: null,
-  operativeId: null,
-  
-  // Additional metadata as JSON object
-  metadata: {},
 };
 
 /**
