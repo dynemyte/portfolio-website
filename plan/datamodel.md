@@ -27,7 +27,7 @@ Defines the operative’s identity.
 - id
 - codename
 - avatarUrl
-- bio / quirks
+- profile
 - role
 - createdAt
 
@@ -52,13 +52,11 @@ Represents the operative’s live operational status.
   - recovering
   - offline
 
-- currentOperationId (nullable)
-
-- lastSeenAt
-
 - health
 
-- energy
+- alerts (array of alert IDs)
+
+- location
 
 ---
 
@@ -75,6 +73,36 @@ This prevents duplication and keeps the operative object lightweight.
 
 ---
 
+# Role
+
+Defines the role/specialty of an operative.
+
+**Relationships:**
+
+- Each role belongs to ONE operative
+- Each operative can have MANY roles
+
+---
+
+## Fields
+
+- id  
+  Possible values:
+  - medic
+  - hacker
+  - scout
+  - muscle
+  - leader
+  - support
+
+- title
+
+- description
+
+- assignedAt
+
+---
+
 # Operation (Mission) → Case File
 
 Represents a mission or operation.
@@ -85,12 +113,24 @@ Each operation acts as a case file.
 
 - id
 - title
-- briefing
-- priority
-- status
+- description
+- priority  
+  Possible values:
+  - low
+  - medium
+  - high
+  - critical
 
-- startAt (nullable until launched)
-- endAt (nullable until finished)
+- status  
+  Possible values:
+  - draft
+  - planned
+  - active
+  - completed
+  - failed
+  - cancelled
+
+- alerts (array of alert IDs)
 
 - createdAt
 
@@ -101,49 +141,14 @@ Optional future fields:
 
 ---
 
-# Assignment (Join Model)
+m
 
-Represents the relationship between operatives and operations.
+- operative
+- operation
+- assignment
+- security
+- notification
 
-This exists because:
-
-- One operative can participate in many operations
-- One operation can include many operatives
-
-This is how real systems model people assigned to projects or cases.
-
----
-
-## Fields
-
-- id
-- operationId
-- operativeId
-
-- role (derived from the operative’s role; not editable)
-
-- assignedAt
-
-Optional:
-
-- outcomeNote
-
----
-
-# Alert (Live Feed + Log)
-
-Alerts represent system events.
-
-Alerts form an append-only event stream.
-
-This means alerts are never edited or deleted — only new alerts are added.
-
----
-
-## Fields
-
-- id
-- type
 - message
 
 - severity  
@@ -153,17 +158,3 @@ This means alerts are never edited or deleted — only new alerts are added.
   - critical
 
 - createdAt
-
-- operationId (optional)
-- operativeId (optional)
-
-- metadata (JSON object)
-
-Example metadata:
-
-```json
-{
-  "injury": "sprained paw",
-  "rival": "Dogs"
-}
-```
