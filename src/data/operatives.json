@@ -1,0 +1,139 @@
+[
+  {
+    "id": "1",
+    "codename": "jumpf1",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Corpus amita careo acidus quo tamdiu vulpes ulterius iusto.",
+    "quirks": "Alo certus absque creta tabula damno canis sophismata canto vallum.",
+    "specialties": [
+      "muscle",
+      "scout",
+      "leader"
+    ],
+    "createdAt": "2026-02-12T14:20:12.319Z",
+    "status": "deployed",
+    "currentOperationId": "op2",
+    "lastSeenAt": "2026-02-14T02:49:43.940Z",
+    "health": 56,
+    "energy": 88
+  },
+  {
+    "id": "2",
+    "codename": "perpaX",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Dolor pecto truculenter ager calcar cupiditas.",
+    "quirks": "Universe vita vesica video tutamen.",
+    "specialties": [
+      "muscle",
+      "support"
+    ],
+    "createdAt": "2026-02-13T17:09:45.247Z",
+    "status": "offline",
+    "currentOperationId": null,
+    "lastSeenAt": "2026-02-13T08:31:37.924Z",
+    "health": 75,
+    "energy": 58
+  },
+  {
+    "id": "3",
+    "codename": "grayQM",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Condico amissio demoror coaegresco.",
+    "quirks": "Auxilium eveniet somniculosus cultellus subvenio pectus vinco asperiores.",
+    "specialties": [
+      "muscle"
+    ],
+    "createdAt": "2026-02-10T07:56:38.234Z",
+    "status": "deployed",
+    "currentOperationId": "op2",
+    "lastSeenAt": "2026-02-08T02:12:20.390Z",
+    "health": 78,
+    "energy": 69
+  },
+  {
+    "id": "4",
+    "codename": "ignorancen3",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Repellendus eius uter denique ara sublime aqua constans temeritas arbustum.",
+    "quirks": "Perspiciatis vos sollers sublime crur.",
+    "specialties": [
+      "leader",
+      "medic"
+    ],
+    "createdAt": "2026-02-12T05:10:18.960Z",
+    "status": "offline",
+    "currentOperationId": null,
+    "lastSeenAt": "2026-02-11T04:14:56.604Z",
+    "health": 91,
+    "energy": 97
+  },
+  {
+    "id": "5",
+    "codename": "hyenaSh",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Absum agnitio tergeo cras suasoria thorax comprehendo.",
+    "quirks": "Ullam beneficium ad amplus cubitum atrox aliquid carpo atque pel.",
+    "specialties": [
+      "scout"
+    ],
+    "createdAt": "2026-02-13T14:51:43.274Z",
+    "status": "deployed",
+    "currentOperationId": "op4",
+    "lastSeenAt": "2026-02-09T23:09:03.956Z",
+    "health": 84,
+    "energy": 58
+  },
+  {
+    "id": "6",
+    "codename": "stalluo",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Maxime caritas abstergo vulpes.",
+    "quirks": "Vox illo earum expedita cado angulus sapiente timidus defleo tego.",
+    "specialties": [
+      "muscle",
+      "scout",
+      "support"
+    ],
+    "createdAt": "2026-02-11T12:05:56.961Z",
+    "status": "recovering",
+    "currentOperationId": null,
+    "lastSeenAt": "2026-02-13T14:18:30.206Z",
+    "health": 59,
+    "energy": 93
+  },
+  {
+    "id": "7",
+    "codename": "raviolikb",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Cum depono sponte versus tempore bene vacuus.",
+    "quirks": "Conturbo uredo defero depopulo curto tempora eius.",
+    "specialties": [
+      "leader",
+      "muscle"
+    ],
+    "createdAt": "2026-02-08T04:30:26.082Z",
+    "status": "offline",
+    "currentOperationId": null,
+    "lastSeenAt": "2026-02-12T17:10:11.293Z",
+    "health": 73,
+    "energy": 76
+  },
+  {
+    "id": "8",
+    "codename": "waistUB",
+    "avatarUrl": "/assets/react.svg",
+    "bio": "Angustus clam dolores amplitudo.",
+    "quirks": "Suasoria vapulus suscipit tondeo temptatio complectus.",
+    "specialties": [
+      "muscle",
+      "hacker",
+      "leader"
+    ],
+    "createdAt": "2026-02-11T01:49:15.782Z",
+    "status": "offline",
+    "currentOperationId": null,
+    "lastSeenAt": "2026-02-08T16:55:17.365Z",
+    "health": 57,
+    "energy": 61
+  }
+]

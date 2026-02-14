@@ -1,0 +1,108 @@
+[
+  {
+    "id": "a1",
+    "type": "security",
+    "severity": "warning",
+    "message": "Comedo cimentarius usitas tener canis stipes umquam curatio.",
+    "createdAt": "2026-02-07T16:36:27.876Z",
+    "operationId": null,
+    "operativeId": null,
+    "metadata": {}
+  },
+  {
+    "id": "a2",
+    "type": "assignment",
+    "severity": "critical",
+    "message": "Tergum vis cruciamentum advoco colo spero claustrum.",
+    "createdAt": "2026-02-09T09:20:21.218Z",
+    "operationId": null,
+    "operativeId": null,
+    "metadata": {
+      "reason": "curso"
+    }
+  },
+  {
+    "id": "a3",
+    "type": "operation",
+    "severity": "info",
+    "message": "Beatae celo excepturi ocer tametsi adstringo cervus vociferor volutabrum.",
+    "createdAt": "2026-02-11T17:46:25.241Z",
+    "operationId": "op2",
+    "operativeId": null,
+    "metadata": {}
+  },
+  {
+    "id": "a4",
+    "type": "operative",
+    "severity": "warning",
+    "message": "Aiunt vestrum apud accendo.",
+    "createdAt": "2026-02-07T21:52:42.691Z",
+    "operationId": null,
+    "operativeId": "5",
+    "metadata": {}
+  },
+  {
+    "id": "a5",
+    "type": "operative",
+    "severity": "critical",
+    "message": "Nam certe esse caveo audentia amplus.",
+    "createdAt": "2026-02-10T13:54:06.065Z",
+    "operationId": null,
+    "operativeId": "6",
+    "metadata": {
+      "reason": "corona"
+    }
+  },
+  {
+    "id": "a6",
+    "type": "system",
+    "severity": "warning",
+    "message": "Vomica assentator aqua unde.",
+    "createdAt": "2026-02-11T13:18:46.328Z",
+    "operationId": null,
+    "operativeId": null,
+    "metadata": {}
+  },
+  {
+    "id": "a7",
+    "type": "security",
+    "severity": "critical",
+    "message": "Ratione dolores coadunatio deduco velociter certus.",
+    "createdAt": "2026-02-09T15:34:33.423Z",
+    "operationId": null,
+    "operativeId": null,
+    "metadata": {
+      "reason": "deporto"
+    }
+  },
+  {
+    "id": "a8",
+    "type": "notification",
+    "severity": "warning",
+    "message": "Clam asperiores umerus attero sumo amoveo denuncio cubitum.",
+    "createdAt": "2026-02-10T02:30:47.932Z",
+    "operationId": null,
+    "operativeId": null,
+    "metadata": {}
+  },
+  {
+    "id": "a9",
+    "type": "operation",
+    "severity": "warning",
+    "message": "Cuppedia tum cerno creber derelinquo confido ipsa cibus hic quos.",
+    "createdAt": "2026-02-07T14:54:38.336Z",
+    "operationId": "op4",
+    "operativeId": null,
+    "metadata": {}
+  },
+  {
+    "id": "a10",
+    "type": "system",
+    "severity": "warning",
+    "message": "Caelum aegrotatio rerum dolore auctor.",
+    "createdAt": "2026-02-09T11:55:33.096Z",
+    "operationId": null,
+    "operativeId": null,
+    "metadata": {}
+  }
+]

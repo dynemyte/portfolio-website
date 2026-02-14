@@ -1,0 +1,100 @@
+[
+  {
+    "id": "op1",
+    "title": "cuppedia aptus defero",
+    "briefing": "Nobis aegrus arma sonitus magni. Adeptio aggredior apostolus minus cupiditas adopto acervus ademptio veritas arbitro. Stella timor ulterius tenax amplus dignissimos voro theatrum ultra.",
+    "priority": "low",
+    "status": "active",
+    "startAt": "2026-02-13T02:53:35.593Z",
+    "endAt": "2026-02-16T11:36:23.030Z",
+    "createdAt": "2026-02-13T15:44:05.767Z",
+    "location": "New Neil",
+    "difficulty": 1,
+    "assignedOperatives": [
+      "7"
+    ]
+  },
+  {
+    "id": "op2",
+    "title": "nobis tribuo clibanus",
+    "briefing": "Aspernatur absorbeo volubilis tristis pariatur accusantium provident tonsor utrum modi. Fugit vigor pecto appositus amplexus deprimo taceo delicate demonstro totidem. Curis sapiente velociter audentia curriculum suspendo.",
+    "priority": "high",
+    "status": "completed",
+    "startAt": "2026-02-12T20:56:30.403Z",
+    "endAt": "2026-02-16T00:51:12.661Z",
+    "createdAt": "2026-02-09T01:35:15.702Z",
+    "location": "Chandlerville",
+    "difficulty": 4,
+    "assignedOperatives": [
+      "1",
+      "5"
+    ]
+  },
+  {
+    "id": "op3",
+    "title": "tollo constans repellendus",
+    "briefing": "Vinitor vetus basium aliquid turbo tenus patior alius vapulus. Comprehendo vorax cornu conqueror quo. Tergeo custodia soluta.",
+    "priority": "critical",
+    "status": "cancelled",
+    "startAt": "2026-02-14T08:22:53.159Z",
+    "endAt": "2026-02-15T21:33:23.116Z",
+    "createdAt": "2026-02-14T05:28:31.940Z",
+    "location": "Paradise",
+    "difficulty": 4,
+    "assignedOperatives": [
+      "2",
+      "5",
+      "8"
+    ]
+  },
+  {
+    "id": "op4",
+    "title": "calcar vox calcar",
+    "briefing": "Angustus cursim comptus custodia abutor. Atqui utrimque arceo debilito defessus adiuvo cumque tredecim accusantium corroboro. Sufficio venio combibo conscendo verto victoria curis versus.",
+    "priority": "medium",
+    "status": "planned",
+    "startAt": "2026-02-13T13:30:01.780Z",
+    "endAt": "2026-02-15T03:26:53.596Z",
+    "createdAt": "2026-02-13T00:49:22.357Z",
+    "location": "Oshkosh",
+    "difficulty": 1,
+    "assignedOperatives": [
+      "1",
+      "3",
+      "6",
+      "2"
+    ]
+  },
+  {
+    "id": "op5",
+    "title": "consectetur aggredior campana",
+    "briefing": "Ascit arma claudeo. Unde provident damnatio surgo quos sodalitas pel nemo animi validus. Exercitationem victoria solus amplitudo curvo.",
+    "priority": "critical",
+    "status": "active",
+    "startAt": "2026-02-14T10:40:15.190Z",
+    "endAt": "2026-02-15T03:05:26.190Z",
+    "createdAt": "2026-02-09T15:43:37.744Z",
+    "location": "Judycester",
+    "difficulty": 1,
+    "assignedOperatives": [
+      "2",
+      "7",
+      "1"
+    ]
+  },
+  {
+    "id": "op6",
+    "title": "cariosus vox sono",
+    "briefing": "Vado ambitus laborum. Defendo succurro conduco sonitus desparatus tristis talus clarus compono officia. Correptius sumptus ara aegrotatio tergiversatio.",
+    "priority": "medium",
+    "status": "active",
+    "startAt": "2026-02-12T21:46:23.884Z",
+    "endAt": "2026-02-15T17:01:43.678Z",
+    "createdAt": "2026-02-11T11:56:06.785Z",
+    "location": "Jessycastad",
+    "difficulty": 3,
+    "assignedOperatives": [
+      "7"
+    ]
+  }
+]
