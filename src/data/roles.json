@@ -1,0 +1,32 @@
+[
+  {
+    "id": "medic",
+    "title": "Medic",
+    "description": "Provides first aid and support."
+  },
+  {
+    "id": "hacker",
+    "title": "Hacker",
+    "description": "Breaches security systems."
+  },
+  {
+    "id": "scout",
+    "title": "Scout",
+    "description": "Reconnaissance and surveillance."
+  },
+  {
+    "id": "muscle",
+    "title": "Muscle",
+    "description": "Physical combat and strength."
+  },
+  {
+    "id": "leader",
+    "title": "Leader",
+    "description": "Coordinates team operations."
+  },
+  {
+    "id": "support",
+    "title": "Support",
+    "description": "Logistics and backup."
+  }
+]
