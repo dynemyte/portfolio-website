@@ -26,5 +26,4 @@ export interface Role {
   id: RoleType;
   title: string;
   description: string;
-  assignedAt: string;
 }

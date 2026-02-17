@@ -16,6 +16,7 @@ export function generateOperative(): Operative {
       RoleType.LEADER,
       RoleType.SUPPORT,
     ]),
+    assignedAt: faker.date.past().toISOString(),
     createdAt: faker.date.past().toISOString(),
 
     status: faker.helpers.arrayElement([

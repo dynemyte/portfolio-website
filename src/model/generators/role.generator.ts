@@ -33,7 +33,6 @@ export function generateRole(roleType?: RoleType): Role {
     id,
     title: roleTitles[id],
     description: roleDescriptions[id],
-    assignedAt: faker.date.past().toISOString(),
   };
 }
 
@@ -48,7 +47,7 @@ export function generateRoles(count?: number): Role[] {
   ];
 
   // If count is not specified, generate all roles
-  if (!count) {
+  if (count === undefined) {
     return allRoleTypes.map(roleType => generateRole(roleType));
   }
 

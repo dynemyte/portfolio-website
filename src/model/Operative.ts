@@ -25,6 +25,7 @@ export interface Operative {
   avatarUrl: string;
   profile: string;
   role: RoleType;
+  assignedAt: string;
   createdAt: string;
 
   // Current State (Changes Often)
