@@ -3,6 +3,8 @@
  * Represents an individual cat operative with static profile and current state
  */
 
+import { RoleType } from './Role';
+
 /**
  * Operative Status values
  */
@@ -14,18 +16,6 @@ export enum OperativeStatus {
 }
 
 /**
- * Operative Role values
- */
-export enum Role {
-  MEDIC = 'medic',
-  HACKER = 'hacker',
-  SCOUT = 'scout',
-  MUSCLE = 'muscle',
-  LEADER = 'leader',
-  SUPPORT = 'support',
-}
-
-/**
  * Operative interface
  */
 export interface Operative {
@@ -34,7 +24,7 @@ export interface Operative {
   codename: string;
   avatarUrl: string;
   profile: string;
-  role: Role;
+  role: RoleType;
   createdAt: string;
 
   // Current State (Changes Often)

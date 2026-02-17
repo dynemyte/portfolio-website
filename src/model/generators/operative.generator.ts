@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Operative, OperativeStatus, Role } from '../Operative';
+import { Operative, OperativeStatus } from '../Operative';
+import { RoleType } from '../Role';
 
 export function generateOperative(): Operative {
   return {
@@ -8,12 +9,12 @@ export function generateOperative(): Operative {
     avatarUrl: faker.image.url(),
     profile: faker.lorem.sentence(),
     role: faker.helpers.arrayElement([
-      Role.MEDIC,
-      Role.HACKER,
-      Role.SCOUT,
-      Role.MUSCLE,
-      Role.LEADER,
-      Role.SUPPORT,
+      RoleType.MEDIC,
+      RoleType.HACKER,
+      RoleType.SCOUT,
+      RoleType.MUSCLE,
+      RoleType.LEADER,
+      RoleType.SUPPORT,
     ]),
     createdAt: faker.date.past().toISOString(),
 
