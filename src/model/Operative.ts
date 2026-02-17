@@ -14,6 +14,18 @@ export enum OperativeStatus {
 }
 
 /**
+ * Operative Role values
+ */
+export enum Role {
+  MEDIC = 'medic',
+  HACKER = 'hacker',
+  SCOUT = 'scout',
+  MUSCLE = 'muscle',
+  LEADER = 'leader',
+  SUPPORT = 'support',
+}
+
+/**
  * Operative interface
  */
 export interface Operative {
@@ -22,7 +34,7 @@ export interface Operative {
   codename: string;
   avatarUrl: string;
   profile: string;
-  role: string;
+  role: Role;
   createdAt: string;
 
   // Current State (Changes Often)

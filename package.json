@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^3.32.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@faker-js/faker": "^10.3.0",
     "framer-motion": "^12.31.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
