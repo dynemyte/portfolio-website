@@ -1,0 +1,32 @@
+[
+  {
+    "id": "medic",
+    "title": "Field Medic",
+    "description": "Provides medical support and emergency care in the field"
+  },
+  {
+    "id": "hacker",
+    "title": "Cyber Specialist",
+    "description": "Specializes in cyber operations and technical infiltration"
+  },
+  {
+    "id": "scout",
+    "title": "Reconnaissance Expert",
+    "description": "Expert in reconnaissance and intelligence gathering"
+  },
+  {
+    "id": "muscle",
+    "title": "Heavy Assault",
+    "description": "Handles heavy combat and security operations"
+  },
+  {
+    "id": "leader",
+    "title": "Team Leader",
+    "description": "Coordinates team operations and strategic planning"
+  },
+  {
+    "id": "support",
+    "title": "Support Specialist",
+    "description": "Provides logistics and tactical support"
+  }
+]
