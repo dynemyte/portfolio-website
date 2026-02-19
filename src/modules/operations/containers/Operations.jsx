@@ -1,5 +1,5 @@
 import { Heading, Box } from '@chakra-ui/react';
-import operationsData from '../../../data/operations.json';
+import { operations as operationsData } from '../../../data';
 
 export default function Operations() {
   return (

@@ -6,7 +6,7 @@ import { generateOperations } from '../src/model/generators/operation.generator.
 import { generateOperatives } from '../src/model/generators/operative.generator.ts';
 import { generateRoles } from '../src/model/generators/role.generator.ts';
 
-const DATA_DIR = path.resolve('src/data');
+const DATA_DIR = path.resolve('src/data/generated');
 
 const SEED = 12345;
 const ALERT_COUNT = 120;

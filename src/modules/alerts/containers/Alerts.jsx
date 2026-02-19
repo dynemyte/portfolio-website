@@ -1,5 +1,5 @@
 import { Heading, Box } from '@chakra-ui/react';
-import alertsData from '../../../data/alerts.json';
+import { alerts as alertsData } from '../../../data';
 
 export default function Alerts() {
   return (
