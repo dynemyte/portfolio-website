@@ -1,4 +1,4 @@
-# Pages Directory
+# Pages
 
 ## Overview
 
