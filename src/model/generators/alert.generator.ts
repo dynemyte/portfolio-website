@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker';
-import { Alert, AlertType, AlertSeverity } from '../Alert';
+import { faker } from '@faker-js/faker'
+import { Alert, AlertType, AlertSeverity } from '../Alert'
 
 export function generateAlert(): Alert {
   return {
@@ -12,6 +12,7 @@ export function generateAlert(): Alert {
       AlertType.SECURITY,
       AlertType.NOTIFICATION,
     ]),
+    title: faker.lorem.words({ min: 2, max: 5 }),
     message: faker.lorem.sentence(),
     severity: faker.helpers.arrayElement([
       AlertSeverity.INFO,
@@ -19,9 +20,9 @@ export function generateAlert(): Alert {
       AlertSeverity.CRITICAL,
     ]),
     createdAt: faker.date.recent().toISOString(),
-  };
+  }
 }
 
 export function generateAlerts(count: number): Alert[] {
-  return Array.from({ length: count }, () => generateAlert());
+  return Array.from({ length: count }, () => generateAlert())
 }

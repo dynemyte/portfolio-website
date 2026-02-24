@@ -29,11 +29,10 @@ export enum AlertSeverity {
  * Alert interface
  */
 export interface Alert {
-  id: string;
-  type: AlertType;
-  message: string;
-  severity: AlertSeverity;
-  createdAt: string;
+  id: string
+  type: AlertType
+  title: string
+  message: string
+  severity: AlertSeverity
+  createdAt: string
 }
-
-
