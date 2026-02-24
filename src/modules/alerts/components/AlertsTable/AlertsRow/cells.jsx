@@ -1,5 +1,5 @@
 import { Box, Text, Tag } from '@chakra-ui/react'
-import { SEVERITY_PALETTE, ALERT_TYPE_PALETTE } from './constants'
+import { SEVERITY_PALETTE, ALERT_TYPE_PALETTE } from '../constants'
 
 const formatLabel = value =>
   value ? value.charAt(0).toUpperCase() + value.slice(1) : 'Unknown'
