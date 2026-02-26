@@ -6,6 +6,7 @@ import Dashboard from './pages/dashboard'
 import Alerts from './pages/alerts'
 import Operations from './pages/operations'
 import Operatives from './pages/operatives'
+import Todo from './pages/todo'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="alerts" element={<Alerts />} />
           <Route path="operations" element={<Operations />} />
           <Route path="operatives" element={<Operatives />} />
+          <Route path="todo" element={<Todo />} />
         </Route>
       </Routes>
     </Router>

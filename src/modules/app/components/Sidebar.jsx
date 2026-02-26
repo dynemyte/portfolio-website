@@ -1,5 +1,5 @@
-import { Link as RouterLink } from 'react-router-dom';
-import { Box, VStack, Button } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom'
+import { Box, VStack, Button } from '@chakra-ui/react'
 
 export default function Sidebar() {
   return (
@@ -20,16 +20,39 @@ export default function Sidebar() {
         <Button as={RouterLink} to="/app" variant="ghost" justifyContent="flex-start">
           Dashboard
         </Button>
-        <Button as={RouterLink} to="/app/alerts" variant="ghost" justifyContent="flex-start">
+        <Button
+          as={RouterLink}
+          to="/app/alerts"
+          variant="ghost"
+          justifyContent="flex-start"
+        >
           Alerts
         </Button>
-        <Button as={RouterLink} to="/app/operations" variant="ghost" justifyContent="flex-start">
+        <Button
+          as={RouterLink}
+          to="/app/operations"
+          variant="ghost"
+          justifyContent="flex-start"
+        >
           Operations
         </Button>
-        <Button as={RouterLink} to="/app/operatives" variant="ghost" justifyContent="flex-start">
+        <Button
+          as={RouterLink}
+          to="/app/operatives"
+          variant="ghost"
+          justifyContent="flex-start"
+        >
           Operatives
+        </Button>
+        <Button
+          as={RouterLink}
+          to="/app/todo"
+          variant="ghost"
+          justifyContent="flex-start"
+        >
+          To do
         </Button>
       </VStack>
     </Box>
-  );
+  )
 }
