@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import TodoItem from '../components/TodoItem'
 
 export default function Todo() {
   const [todos, setTodos] = React.useState([
@@ -7,12 +8,27 @@ export default function Todo() {
     { id: 3, text: 'Check for updates on Operatives', completed: false },
   ])
 
+  const toggleTodo = id => {
+    setTodos(previousTodos => {
+      return previousTodos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          }
+        }
+
+        return todo
+      })
+    })
+  }
+
   return (
     <div>
       <h2>Tasks</h2>
 
       {todos.map(todo => (
-        <div key={todo.id}>{todo.text}</div>
+        <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
       ))}
     </div>
   )
