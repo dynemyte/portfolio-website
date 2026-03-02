@@ -11,7 +11,9 @@ export default function Todo() {
     <div>
       <h2>Tasks</h2>
 
-      <pre>{JSON.stringify(todos, null, 2)}</pre>
+      {todos.map(todo => (
+        <div key={todo.id}>{todo.text}</div>
+      ))}
     </div>
   )
 }
