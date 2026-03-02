@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import TodoItem from '../components/TodoItem'
+import { Heading } from '@chakra-ui/react'
 
 export default function Todo() {
   const [todos, setTodos] = React.useState([
@@ -25,7 +26,9 @@ export default function Todo() {
 
   return (
     <div>
-      <h2>Tasks</h2>
+      <Heading as="h2" size="lg" mb={4}>
+        Tasks
+      </Heading>
 
       {todos.map(todo => (
         <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
