@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import TodoItem from '../components/TodoItem'
-import { Heading } from '@chakra-ui/react'
+import { Heading, VStack } from '@chakra-ui/react'
 
 export default function Todo() {
-  const [todos, setTodos] = React.useState([
+  const [todos, setTodos] = useState([
     { id: 1, text: 'Check Operations', completed: false },
     { id: 2, text: 'Scan for vulnerabilities', completed: false },
     { id: 3, text: 'Check for updates on Operatives', completed: false },
@@ -29,10 +29,11 @@ export default function Todo() {
       <Heading as="h2" size="lg" mb={4}>
         Tasks
       </Heading>
-
-      {todos.map(todo => (
-        <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
-      ))}
+      <VStack spacing={3}>
+        {todos.map(todo => (
+          <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
+        ))}
+      </VStack>
     </div>
   )
 }

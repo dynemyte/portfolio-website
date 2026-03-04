@@ -2,12 +2,17 @@ import { Card, HStack, Text, Checkbox } from '@chakra-ui/react'
 
 export default function TodoItem({ todo, onToggle }) {
   return (
-    <Card.Root>
-      <Card.Body _hover={{ bg: 'gray.50' }}>
+    <Card.Root
+      borderColor="gray.300"
+      borderWidth="1px"
+      borderRadius="md"
+      _hover={{ bg: 'gray.50' }}
+      width="100%"
+    >
+      <Card.Body p={3}>
         <HStack
           gap={3}
           align="center"
-          p={4}
           onClick={() => onToggle(todo.id)}
           //   If you later add a delete icon/button inside, it will also toggle. Fix later by adding a separate onClick handler for the delete button and calling event.stopPropagation() there.
           cursor="default"
