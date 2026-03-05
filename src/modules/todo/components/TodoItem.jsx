@@ -8,15 +8,17 @@ export default function TodoItem({ todo, onToggle }) {
       borderRadius="md"
       _hover={{ bg: 'gray.50' }}
       width="100%"
+      transition="all 0.5s ease"
+      onClick={() => onToggle(todo.id)}
+      cursor="default"
+      userSelect="none"
     >
       <Card.Body p={3}>
         <HStack
           gap={3}
           align="center"
-          onClick={() => onToggle(todo.id)}
           //   If you later add a delete icon/button inside, it will also toggle. Fix later by adding a separate onClick handler for the delete button and calling event.stopPropagation() there.
-          cursor="default"
-          userSelect="none"
+
           transition="background-color 0.2s ease"
         >
           <Checkbox.Root

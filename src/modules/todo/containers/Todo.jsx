@@ -18,11 +18,15 @@ export default function Todo() {
             completed: !todo.completed,
           }
         }
-
         return todo
       })
     })
   }
+
+  const uncompleted = todos.filter(todo => !todo.completed)
+  const completed = todos.filter(todo => todo.completed)
+
+  const displayTodos = [...uncompleted, ...completed]
 
   return (
     <div>
@@ -30,7 +34,7 @@ export default function Todo() {
         Tasks
       </Heading>
       <VStack spacing={3}>
-        {todos.map(todo => (
+        {displayTodos.map(todo => (
           <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
         ))}
       </VStack>
