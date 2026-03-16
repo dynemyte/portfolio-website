@@ -1,12 +1,14 @@
 import { useState } from 'react'
+import AddDrawer from '../components/AddDrawer'
 import TodoItem from '../components/TodoItem'
 import { Heading, VStack, HStack, Input, Button, Text, Spinner } from '@chakra-ui/react'
 import useTodos from '../hooks/useTodos'
 
 export default function Todo() {
-  const { todos, toggleTodo, deleteTodo, isLoading, error } = useTodos()
+  const { todos, addTodo, toggleTodo, deleteTodo, isLoading, error } = useTodos()
 
   const [searchTerm, setSearchTerm] = useState('')
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   const normalizedSearchTerm = searchTerm.toLowerCase()
 
@@ -35,8 +37,15 @@ export default function Todo() {
           onChange={e => setSearchTerm(e.target.value)}
         />
 
-        <Button>+ Add Task</Button>
+        <Button onClick={() => setIsDrawerOpen(true)}>+ Add Task</Button>
       </HStack>
+
+      <AddDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onSubmit={addTodo}
+        title="Add Task"
+      />
 
       {error ? (
         <Text color="red.400" mb={4}>
