@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import TodoItem from '../components/TodoItem'
-import { Heading, VStack } from '@chakra-ui/react'
+import { Heading, VStack, HStack, Input, Button } from '@chakra-ui/react'
 import {
   listTodos,
   seedTodos,
@@ -11,6 +11,7 @@ import {
 
 export default function Todo() {
   const [todos, setTodos] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
 
   async function refreshTodos() {
     const data = await listTodos()
@@ -48,6 +49,9 @@ export default function Todo() {
   const uncompleted = todos.filter(todo => !todo.completed)
   const completed = todos.filter(todo => todo.completed)
   const displayTodos = [...uncompleted, ...completed]
+  const filteredTodos = displayTodos.filter(todo =>
+    todo.text.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
     <div>
@@ -55,8 +59,17 @@ export default function Todo() {
         Tasks
       </Heading>
 
+      <HStack justify="space-between" mb={4}>
+        <Input
+          placeholder="Search tasks..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
+        <Button>+ Add Task</Button>
+      </HStack>
+
       <VStack spacing={3}>
-        {displayTodos.map(todo => (
+        {filteredTodos.map(todo => (
           <TodoItem
             key={todo.id}
             todo={todo}

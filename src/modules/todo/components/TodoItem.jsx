@@ -1,6 +1,7 @@
-import { Card, HStack, Text, Checkbox } from '@chakra-ui/react'
+import { Card, HStack, Text, Checkbox, IconButton } from '@chakra-ui/react'
+import { HiArchiveBoxXMark } from 'react-icons/hi2'
 
-export default function TodoItem({ todo, onToggle }) {
+export default function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <Card.Root
       borderColor="gray.300"
@@ -14,13 +15,7 @@ export default function TodoItem({ todo, onToggle }) {
       userSelect="none"
     >
       <Card.Body p={3}>
-        <HStack
-          gap={3}
-          align="center"
-          //   If you later add a delete icon/button inside, it will also toggle. Fix later by adding a separate onClick handler for the delete button and calling event.stopPropagation() there.
-
-          transition="background-color 0.2s ease"
-        >
+        <HStack gap={3} align="center" transition="background-color 0.2s ease">
           <Checkbox.Root
             checked={todo.completed}
             onCheckedChange={e => {
@@ -33,6 +28,18 @@ export default function TodoItem({ todo, onToggle }) {
           </Checkbox.Root>
 
           <Text flex="1">{todo.text}</Text>
+
+          <IconButton
+            aria-label="Archive task"
+            variant="ghost"
+            size="sm"
+            onClick={e => {
+              e.stopPropagation()
+              onDelete(todo.id)
+            }}
+          >
+            <HiArchiveBoxXMark />
+          </IconButton>
         </HStack>
       </Card.Body>
     </Card.Root>
