@@ -1,18 +1,27 @@
 import { useState, useEffect } from 'react'
 import TodoItem from '../components/TodoItem'
 import { Heading, VStack } from '@chakra-ui/react'
-import { listTodos, seedTodos } from '../data/todoRepository'
+import {
+  listTodos,
+  seedTodos,
+  createTodo,
+  toggleTodo as toggleTodoInRepository,
+  deleteTodo as deleteTodoInRepository,
+} from '../data/todoRepository'
 
 export default function Todo() {
   const [todos, setTodos] = useState([])
+
+  async function refreshTodos() {
+    const data = await listTodos()
+    setTodos(data)
+  }
 
   useEffect(() => {
     async function load() {
       try {
         await seedTodos()
-        const data = await listTodos()
-
-        setTodos(data)
+        await refreshTodos()
       } catch (error) {
         console.error('Failed to load todos from RxDB', error)
       }
@@ -21,12 +30,19 @@ export default function Todo() {
     load()
   }, [])
 
-  const toggleTodo = id => {
-    setTodos(previousTodos =>
-      previousTodos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    )
+  const addTodo = async text => {
+    await createTodo(text)
+    await refreshTodos()
+  }
+
+  const toggleTodo = async id => {
+    await toggleTodoInRepository(id)
+    await refreshTodos()
+  }
+
+  const deleteTodo = async id => {
+    await deleteTodoInRepository(id)
+    await refreshTodos()
   }
 
   const uncompleted = todos.filter(todo => !todo.completed)
@@ -41,7 +57,13 @@ export default function Todo() {
 
       <VStack spacing={3}>
         {displayTodos.map(todo => (
-          <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onAdd={addTodo}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+          />
         ))}
       </VStack>
     </div>
