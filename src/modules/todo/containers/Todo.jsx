@@ -1,31 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import TodoItem from '../components/TodoItem'
 import { Heading, VStack } from '@chakra-ui/react'
-
-const STORAGE_KEY = 'todo-app-todos'
+import { listTodos } from '../data/todoRepository'
 
 export default function Todo() {
-  const [todos, setTodos] = useState(() => {
-    const defaultTodos = [
-      { id: 1, text: 'Check Operations', completed: false },
-      { id: 2, text: 'Scan for vulnerabilities', completed: false },
-      { id: 3, text: 'Check for updates on Operatives', completed: false },
-    ]
-
-    const storedTodos = localStorage.getItem(STORAGE_KEY)
-    if (!storedTodos) return defaultTodos
-
-    try {
-      const parsed = JSON.parse(storedTodos)
-      return Array.isArray(parsed) ? parsed : defaultTodos
-    } catch {
-      return defaultTodos
-    }
-  })
+  const [todos, setTodos] = useState([])
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-  }, [todos])
+    listTodos().then(setTodos)
+  }, [])
 
   const toggleTodo = id => {
     setTodos(previousTodos =>
