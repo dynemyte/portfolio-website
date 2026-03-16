@@ -1,15 +1,20 @@
 import { getTodoCollection } from './todoCollection'
 
-let seedTodosPromise
-
-const seedTodoTexts = [
-  'Check Operations',
-  'Scan for vulnerabilities',
-  'Check for updates on Operatives',
-]
+const LEGACY_SEEDED_TODO_TEXTS = new Set([
+  'check operations',
+  'scan for vulnerabilities',
+  'check for updates on operatives',
+])
 
 function toTodo(document) {
-  return document.toJSON()
+  const todo = document.toJSON()
+
+  return {
+    ...todo,
+    text: typeof todo.text === 'string' ? todo.text : '',
+    completed: Boolean(todo.completed),
+    createdAt: typeof todo.createdAt === 'number' ? todo.createdAt : 0,
+  }
 }
 
 function createTodoId() {
@@ -20,10 +25,38 @@ function createTodoId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+function isLegacySeededTodoText(text) {
+  return LEGACY_SEEDED_TODO_TEXTS.has(String(text).trim().toLowerCase())
+}
+
 export async function listTodos() {
   const todosCollection = await getTodoCollection()
-  const documents = await todosCollection.find().sort({ createdAt: 'asc' }).exec()
-  return documents.map(toTodo)
+
+  const documents = await todosCollection.find().exec()
+
+  return documents
+    .map(toTodo)
+    .sort((firstTodo, secondTodo) => firstTodo.createdAt - secondTodo.createdAt)
+}
+
+export async function removeLegacySeedTodos() {
+  const todosCollection = await getTodoCollection()
+
+  const documents = await todosCollection.find().exec()
+  let removedCount = 0
+
+  for (const document of documents) {
+    const todo = toTodo(document)
+
+    if (!isLegacySeededTodoText(todo.text)) {
+      continue
+    }
+
+    await document.remove()
+    removedCount += 1
+  }
+
+  return removedCount
 }
 
 export async function createTodo(text) {
@@ -34,6 +67,7 @@ export async function createTodo(text) {
   }
 
   const todosCollection = await getTodoCollection()
+
   const document = await todosCollection.insert({
     id: createTodoId(),
     text: normalizedText,
@@ -44,42 +78,9 @@ export async function createTodo(text) {
   return toTodo(document)
 }
 
-export async function seedTodos() {
-  if (!seedTodosPromise) {
-    seedTodosPromise = (async () => {
-      const existing = await listTodos()
-      if (!existing.length) {
-        await createTodo('Check Operations')
-        await createTodo('Scan for vulnerabilities')
-        await createTodo('Check for updates on Operatives')
-        return
-      }
-
-      const seedTextSet = new Set(seedTodoTexts)
-      const seenSeedTexts = new Set()
-
-      for (const todo of existing) {
-        if (!seedTextSet.has(todo.text)) {
-          continue
-        }
-
-        if (seenSeedTexts.has(todo.text)) {
-          await deleteTodo(todo.id)
-          continue
-        }
-
-        seenSeedTexts.add(todo.text)
-      }
-    })().finally(() => {
-      seedTodosPromise = undefined
-    })
-  }
-
-  return seedTodosPromise
-}
-
 export async function toggleTodo(id) {
   const todosCollection = await getTodoCollection()
+
   const document = await todosCollection.findOne(id).exec()
 
   if (!document) {
@@ -96,6 +97,7 @@ export async function toggleTodo(id) {
 
 export async function deleteTodo(id) {
   const todosCollection = await getTodoCollection()
+
   const document = await todosCollection.findOne(id).exec()
 
   if (!document) {
@@ -103,5 +105,6 @@ export async function deleteTodo(id) {
   }
 
   await document.remove()
+
   return true
 }
