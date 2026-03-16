@@ -1,13 +1,24 @@
 import { useState, useEffect } from 'react'
 import TodoItem from '../components/TodoItem'
 import { Heading, VStack } from '@chakra-ui/react'
-import { listTodos } from '../data/todoRepository'
+import { listTodos, seedTodos } from '../data/todoRepository'
 
 export default function Todo() {
   const [todos, setTodos] = useState([])
 
   useEffect(() => {
-    listTodos().then(setTodos)
+    async function load() {
+      try {
+        await seedTodos()
+        const data = await listTodos()
+
+        setTodos(data)
+      } catch (error) {
+        console.error('Failed to load todos from RxDB', error)
+      }
+    }
+
+    load()
   }, [])
 
   const toggleTodo = id => {

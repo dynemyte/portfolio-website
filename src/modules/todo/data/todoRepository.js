@@ -1,5 +1,13 @@
 import { getTodoCollection } from './todoCollection'
 
+let seedTodosPromise
+
+const seedTodoTexts = [
+  'Check Operations',
+  'Scan for vulnerabilities',
+  'Check for updates on Operatives',
+]
+
 function toTodo(document) {
   return document.toJSON()
 }
@@ -34,6 +42,40 @@ export async function createTodo(text) {
   })
 
   return toTodo(document)
+}
+
+export async function seedTodos() {
+  if (!seedTodosPromise) {
+    seedTodosPromise = (async () => {
+      const existing = await listTodos()
+      if (!existing.length) {
+        await createTodo('Check Operations')
+        await createTodo('Scan for vulnerabilities')
+        await createTodo('Check for updates on Operatives')
+        return
+      }
+
+      const seedTextSet = new Set(seedTodoTexts)
+      const seenSeedTexts = new Set()
+
+      for (const todo of existing) {
+        if (!seedTextSet.has(todo.text)) {
+          continue
+        }
+
+        if (seenSeedTexts.has(todo.text)) {
+          await deleteTodo(todo.id)
+          continue
+        }
+
+        seenSeedTexts.add(todo.text)
+      }
+    })().finally(() => {
+      seedTodosPromise = undefined
+    })
+  }
+
+  return seedTodosPromise
 }
 
 export async function toggleTodo(id) {
