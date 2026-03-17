@@ -39,6 +39,12 @@ export default function AddDrawer({ isOpen, onClose, onSubmit, title }) {
                 placeholder="Task title"
                 value={inputValue}
                 onChange={event => setInputValue(event.target.value)}
+                onKeyDown={event => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault()
+                    void handleSave()
+                  }
+                }}
               />
             </Drawer.Body>
 
