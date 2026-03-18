@@ -7,6 +7,7 @@ import Alerts from './pages/alerts'
 import Operations from './pages/operations'
 import Operatives from './pages/operatives'
 import Todo from './pages/todo'
+import Playground from './pages/playground'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="operations" element={<Operations />} />
           <Route path="operatives" element={<Operatives />} />
           <Route path="todo" element={<Todo />} />
+          <Route path="playground" element={<Playground />} />
         </Route>
       </Routes>
     </Router>

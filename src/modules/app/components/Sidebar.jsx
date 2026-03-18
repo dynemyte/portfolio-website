@@ -52,6 +52,14 @@ export default function Sidebar() {
         >
           To do
         </Button>
+        <Button
+          as={RouterLink}
+          to="/app/playground"
+          variant="ghost"
+          justifyContent="flex-start"
+        >
+          Playground
+        </Button>
       </VStack>
     </Box>
   )
