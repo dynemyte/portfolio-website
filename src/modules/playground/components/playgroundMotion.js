@@ -1,8 +1,8 @@
 export const playgroundMotion = {
   square: {
-    duration: 10,
+    duration: 7,
     rotation: 1080,
-    ease: 'elastic.inOut',
+    ease: 'power2n.inOut',
   },
   star: {
     duration: 9,
