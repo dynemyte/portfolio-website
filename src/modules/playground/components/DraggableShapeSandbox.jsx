@@ -46,16 +46,16 @@ export default function DraggableShapeSandbox() {
       const getMaxY = () =>
         Math.max(areaElement.getBoundingClientRect().height - CIRCLE_SIZE, 0)
 
-      const clampWithinBounds = (element) => {
+      const clampWithinBounds = element => {
         const nextX = gsap.utils.clamp(
           0,
           getMaxX(),
-          Number(gsap.getProperty(element, 'x')),
+          Number(gsap.getProperty(element, 'x'))
         )
         const nextY = gsap.utils.clamp(
           0,
           getMaxY(),
-          Number(gsap.getProperty(element, 'y')),
+          Number(gsap.getProperty(element, 'y'))
         )
 
         gsap.set(element, {
@@ -65,17 +65,17 @@ export default function DraggableShapeSandbox() {
       }
 
       gsap.set(circleElements, {
-        x: (index) => CIRCLES[index].x,
-        y: (index) => CIRCLES[index].y,
+        x: index => CIRCLES[index].x,
+        y: index => CIRCLES[index].y,
         scale: 1,
       })
 
-      circleElements.forEach((circle) => clampWithinBounds(circle))
+      circleElements.forEach(circle => clampWithinBounds(circle))
 
-      const nudgeNeighbors = (activeCircle) => {
+      const nudgeNeighbors = activeCircle => {
         const activeCenter = getCenter(activeCircle)
 
-        circleElements.forEach((circle) => {
+        circleElements.forEach(circle => {
           if (circle === activeCircle) {
             return
           }
@@ -104,12 +104,12 @@ export default function DraggableShapeSandbox() {
           const nextX = gsap.utils.clamp(
             0,
             getMaxX(),
-            currentX + Math.cos(angle) * strength,
+            currentX + Math.cos(angle) * strength
           )
           const nextY = gsap.utils.clamp(
             0,
             getMaxY(),
-            currentY + Math.sin(angle) * strength,
+            currentY + Math.sin(angle) * strength
           )
 
           gsap.to(circle, {
@@ -150,14 +150,14 @@ export default function DraggableShapeSandbox() {
       })
 
       const handleResize = () => {
-        circleElements.forEach((circle) => clampWithinBounds(circle))
+        circleElements.forEach(circle => clampWithinBounds(circle))
       }
 
       window.addEventListener('resize', handleResize)
 
       return () => {
         window.removeEventListener('resize', handleResize)
-        draggables.forEach((instance) => instance.kill())
+        draggables.forEach(instance => instance.kill())
       }
     }, areaRef)
 
@@ -184,7 +184,7 @@ export default function DraggableShapeSandbox() {
         {CIRCLES.map((circle, index) => (
           <Box
             key={circle.id}
-            ref={(element) => {
+            ref={element => {
               circleRefs.current[index] = element
             }}
             position="absolute"
