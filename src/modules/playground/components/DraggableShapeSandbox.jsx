@@ -1,13 +1,15 @@
 import { Box, Text } from '@chakra-ui/react'
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import { Draggable } from 'gsap/Draggable'
+import { Draggable } from 'gsap/all'
 
 gsap.registerPlugin(Draggable)
 
 const CIRCLE_SIZE = 72
-const INTERACTION_RADIUS = 140
-const PUSH_DISTANCE = 42
+const PRE_CONTACT_BUFFER = 10
+const INTERACTION_RADIUS = CIRCLE_SIZE + PRE_CONTACT_BUFFER
+const PUSH_DISTANCE = 10
+const SOLVER_ITERATIONS = 8
 
 const CIRCLES = [
   { id: 'alpha', x: 24, y: 40, bg: 'teal.400' },
@@ -46,22 +48,33 @@ export default function DraggableShapeSandbox() {
       const getMaxY = () =>
         Math.max(areaElement.getBoundingClientRect().height - CIRCLE_SIZE, 0)
 
-      const clampWithinBounds = element => {
-        const nextX = gsap.utils.clamp(
-          0,
-          getMaxX(),
-          Number(gsap.getProperty(element, 'x'))
-        )
-        const nextY = gsap.utils.clamp(
-          0,
-          getMaxY(),
-          Number(gsap.getProperty(element, 'y'))
-        )
+      const clampPosition = (x, y) => ({
+        x: gsap.utils.clamp(0, getMaxX(), x),
+        y: gsap.utils.clamp(0, getMaxY(), y),
+      })
+
+      const getPosition = element => ({
+        x: Number(gsap.getProperty(element, 'x')),
+        y: Number(gsap.getProperty(element, 'y')),
+      })
+
+      const setPosition = (element, x, y) => {
+        const clamped = clampPosition(x, y)
 
         gsap.set(element, {
-          x: nextX,
-          y: nextY,
+          x: clamped.x,
+          y: clamped.y,
         })
+      }
+
+      const clampWithinBounds = element => {
+        const position = getPosition(element)
+        setPosition(element, position.x, position.y)
+      }
+
+      const moveBy = (element, dx, dy) => {
+        const position = getPosition(element)
+        setPosition(element, position.x + dx, position.y + dy)
       }
 
       gsap.set(circleElements, {
@@ -71,6 +84,61 @@ export default function DraggableShapeSandbox() {
       })
 
       circleElements.forEach(circle => clampWithinBounds(circle))
+
+      const resolveOverlaps = activeCircle => {
+        for (let iteration = 0; iteration < SOLVER_ITERATIONS; iteration += 1) {
+          let hasOverlap = false
+
+          for (let firstIndex = 0; firstIndex < circleElements.length; firstIndex += 1) {
+            for (
+              let secondIndex = firstIndex + 1;
+              secondIndex < circleElements.length;
+              secondIndex += 1
+            ) {
+              const firstCircle = circleElements[firstIndex]
+              const secondCircle = circleElements[secondIndex]
+              const firstCenter = getCenter(firstCircle)
+              const secondCenter = getCenter(secondCircle)
+
+              const dx = secondCenter.x - firstCenter.x
+              const dy = secondCenter.y - firstCenter.y
+              const distance = Math.sqrt(dx * dx + dy * dy)
+
+              if (distance >= CIRCLE_SIZE) {
+                continue
+              }
+
+              hasOverlap = true
+
+              const overlap = CIRCLE_SIZE - distance
+              const nx = distance > 0 ? dx / distance : 1
+              const ny = distance > 0 ? dy / distance : 0
+
+              let firstPush = overlap / 2
+              let secondPush = overlap / 2
+
+              if (firstCircle === activeCircle) {
+                firstPush = 0
+                secondPush = overlap
+              }
+
+              if (secondCircle === activeCircle) {
+                firstPush = overlap
+                secondPush = 0
+              }
+
+              moveBy(firstCircle, -nx * firstPush, -ny * firstPush)
+              moveBy(secondCircle, nx * secondPush, ny * secondPush)
+            }
+          }
+
+          circleElements.forEach(circle => clampWithinBounds(circle))
+
+          if (!hasOverlap) {
+            break
+          }
+        }
+      }
 
       const nudgeNeighbors = activeCircle => {
         const activeCenter = getCenter(activeCircle)
@@ -88,46 +156,49 @@ export default function DraggableShapeSandbox() {
           if (distance >= INTERACTION_RADIUS || distance === 0) {
             gsap.to(circle, {
               scale: 1,
-              duration: 0.2,
+              duration: 0.12,
               ease: 'power1.out',
-              overwrite: false,
+              overwrite: true,
             })
             return
           }
 
-          const strength = (1 - distance / INTERACTION_RADIUS) * PUSH_DISTANCE
-          const angle = Math.atan2(dy, dx)
+          const proximity = (INTERACTION_RADIUS - distance) / PRE_CONTACT_BUFFER
+          const strength = proximity * PUSH_DISTANCE
+          const nx = dx / distance
+          const ny = dy / distance
 
-          const currentX = Number(gsap.getProperty(circle, 'x'))
-          const currentY = Number(gsap.getProperty(circle, 'y'))
-
-          const nextX = gsap.utils.clamp(
-            0,
-            getMaxX(),
-            currentX + Math.cos(angle) * strength
-          )
-          const nextY = gsap.utils.clamp(
-            0,
-            getMaxY(),
-            currentY + Math.sin(angle) * strength
-          )
+          moveBy(circle, nx * strength, ny * strength)
 
           gsap.to(circle, {
-            x: nextX,
-            y: nextY,
             scale: 1.08,
-            duration: 0.18,
+            duration: 0.1,
             ease: 'power2.out',
             overwrite: true,
           })
         })
       }
 
+      let activeCircle = null
+
+      const runPhysicsStep = () => {
+        if (!activeCircle) {
+          return
+        }
+
+        nudgeNeighbors(activeCircle)
+        resolveOverlaps(activeCircle)
+      }
+
+      gsap.ticker.add(runPhysicsStep)
+
       const draggables = Draggable.create(circleElements, {
         type: 'x,y',
         bounds: areaElement,
         edgeResistance: 0.9,
         onPress() {
+          activeCircle = this.target
+          gsap.set(this.target, { zIndex: 2 })
           gsap.to(this.target, {
             scale: 1.12,
             duration: 0.12,
@@ -136,10 +207,13 @@ export default function DraggableShapeSandbox() {
           })
         },
         onDrag() {
-          nudgeNeighbors(this.target)
+          runPhysicsStep()
         },
         onRelease() {
+          activeCircle = null
+          gsap.set(this.target, { zIndex: 1 })
           clampWithinBounds(this.target)
+          resolveOverlaps(null)
           gsap.to(this.target, {
             scale: 1,
             duration: 0.2,
@@ -151,12 +225,14 @@ export default function DraggableShapeSandbox() {
 
       const handleResize = () => {
         circleElements.forEach(circle => clampWithinBounds(circle))
+        resolveOverlaps(null)
       }
 
       window.addEventListener('resize', handleResize)
 
       return () => {
         window.removeEventListener('resize', handleResize)
+        gsap.ticker.remove(runPhysicsStep)
         draggables.forEach(instance => instance.kill())
       }
     }, areaRef)
