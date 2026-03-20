@@ -1,4 +1,5 @@
 import { Box, Container, Heading, Text } from '@chakra-ui/react'
+import DraggableShapeSandbox from './DraggableShapeSandbox'
 import RollingShapeTrack from './RollingShapeTrack'
 import WigglyStarTrack from './WigglyStarTrack'
 
@@ -19,6 +20,10 @@ export default function PlaygroundContainer() {
 
       <Box mt={4}>
         <WigglyStarTrack />
+      </Box>
+
+      <Box mt={4}>
+        <DraggableShapeSandbox />
       </Box>
     </Container>
   )
