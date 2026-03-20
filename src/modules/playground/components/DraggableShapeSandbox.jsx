@@ -6,10 +6,13 @@ import { Draggable } from 'gsap/all'
 gsap.registerPlugin(Draggable)
 
 const CIRCLE_SIZE = 72
-const PRE_CONTACT_BUFFER = 10
-const INTERACTION_RADIUS = CIRCLE_SIZE + PRE_CONTACT_BUFFER
-const PUSH_DISTANCE = 10
-const SOLVER_ITERATIONS = 8
+const COLLISION_DISTANCE = CIRCLE_SIZE
+const PHYSICS_SUBSTEPS = 2
+const BOUNCE_RESTITUTION = 0.9
+const VELOCITY_DAMPING = 0.985
+const MAX_SPEED = 28
+const STOP_SPEED = 0.03
+const DRAG_VELOCITY_SCALE = 0.9
 
 const CIRCLES = [
   { id: 'alpha', x: 24, y: 40, bg: 'teal.400' },
@@ -18,13 +21,6 @@ const CIRCLES = [
   { id: 'delta', x: 384, y: 128, bg: 'pink.400' },
   { id: 'echo', x: 520, y: 70, bg: 'cyan.500' },
 ]
-
-function getCenter(element) {
-  return {
-    x: Number(gsap.getProperty(element, 'x')) + CIRCLE_SIZE / 2,
-    y: Number(gsap.getProperty(element, 'y')) + CIRCLE_SIZE / 2,
-  }
-}
 
 export default function DraggableShapeSandbox() {
   const areaRef = useRef(null)
@@ -48,146 +44,200 @@ export default function DraggableShapeSandbox() {
       const getMaxY = () =>
         Math.max(areaElement.getBoundingClientRect().height - CIRCLE_SIZE, 0)
 
-      const clampPosition = (x, y) => ({
-        x: gsap.utils.clamp(0, getMaxX(), x),
-        y: gsap.utils.clamp(0, getMaxY(), y),
-      })
+      const clamp = (value, min, max) => gsap.utils.clamp(min, max, value)
 
-      const getPosition = element => ({
-        x: Number(gsap.getProperty(element, 'x')),
-        y: Number(gsap.getProperty(element, 'y')),
-      })
-
-      const setPosition = (element, x, y) => {
-        const clamped = clampPosition(x, y)
+      const bodies = circleElements.map((element, index) => {
+        const initialX = clamp(CIRCLES[index].x, 0, getMaxX())
+        const initialY = clamp(CIRCLES[index].y, 0, getMaxY())
 
         gsap.set(element, {
-          x: clamped.x,
-          y: clamped.y,
+          x: initialX,
+          y: initialY,
+          scale: 1,
+          zIndex: 1,
         })
-      }
 
-      const clampWithinBounds = element => {
-        const position = getPosition(element)
-        setPosition(element, position.x, position.y)
-      }
-
-      const moveBy = (element, dx, dy) => {
-        const position = getPosition(element)
-        setPosition(element, position.x + dx, position.y + dy)
-      }
-
-      gsap.set(circleElements, {
-        x: index => CIRCLES[index].x,
-        y: index => CIRCLES[index].y,
-        scale: 1,
+        return {
+          element,
+          x: initialX,
+          y: initialY,
+          vx: 0,
+          vy: 0,
+          isDragging: false,
+          lastX: initialX,
+          lastY: initialY,
+          lastTimestamp: 0,
+        }
       })
 
-      circleElements.forEach(circle => clampWithinBounds(circle))
+      const bodyByElement = new Map(bodies.map(body => [body.element, body]))
 
-      const resolveOverlaps = activeCircle => {
-        for (let iteration = 0; iteration < SOLVER_ITERATIONS; iteration += 1) {
-          let hasOverlap = false
+      const limitSpeed = body => {
+        const speed = Math.sqrt(body.vx * body.vx + body.vy * body.vy)
 
-          for (let firstIndex = 0; firstIndex < circleElements.length; firstIndex += 1) {
-            for (
-              let secondIndex = firstIndex + 1;
-              secondIndex < circleElements.length;
-              secondIndex += 1
-            ) {
-              const firstCircle = circleElements[firstIndex]
-              const secondCircle = circleElements[secondIndex]
-              const firstCenter = getCenter(firstCircle)
-              const secondCenter = getCenter(secondCircle)
-
-              const dx = secondCenter.x - firstCenter.x
-              const dy = secondCenter.y - firstCenter.y
-              const distance = Math.sqrt(dx * dx + dy * dy)
-
-              if (distance >= CIRCLE_SIZE) {
-                continue
-              }
-
-              hasOverlap = true
-
-              const overlap = CIRCLE_SIZE - distance
-              const nx = distance > 0 ? dx / distance : 1
-              const ny = distance > 0 ? dy / distance : 0
-
-              let firstPush = overlap / 2
-              let secondPush = overlap / 2
-
-              if (firstCircle === activeCircle) {
-                firstPush = 0
-                secondPush = overlap
-              }
-
-              if (secondCircle === activeCircle) {
-                firstPush = overlap
-                secondPush = 0
-              }
-
-              moveBy(firstCircle, -nx * firstPush, -ny * firstPush)
-              moveBy(secondCircle, nx * secondPush, ny * secondPush)
-            }
-          }
-
-          circleElements.forEach(circle => clampWithinBounds(circle))
-
-          if (!hasOverlap) {
-            break
-          }
+        if (speed <= MAX_SPEED || speed === 0) {
+          return
         }
+
+        const scale = MAX_SPEED / speed
+        body.vx *= scale
+        body.vy *= scale
       }
 
-      const nudgeNeighbors = activeCircle => {
-        const activeCenter = getCenter(activeCircle)
+      const applyWallBounce = body => {
+        const maxX = getMaxX()
+        const maxY = getMaxY()
 
-        circleElements.forEach(circle => {
-          if (circle === activeCircle) {
-            return
+        if (body.x < 0) {
+          body.x = 0
+          if (body.vx < 0) {
+            body.vx = -body.vx * BOUNCE_RESTITUTION
           }
+        }
 
-          const circleCenter = getCenter(circle)
-          const dx = circleCenter.x - activeCenter.x
-          const dy = circleCenter.y - activeCenter.y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance >= INTERACTION_RADIUS || distance === 0) {
-            gsap.to(circle, {
-              scale: 1,
-              duration: 0.12,
-              ease: 'power1.out',
-              overwrite: true,
-            })
-            return
+        if (body.x > maxX) {
+          body.x = maxX
+          if (body.vx > 0) {
+            body.vx = -body.vx * BOUNCE_RESTITUTION
           }
+        }
 
-          const proximity = (INTERACTION_RADIUS - distance) / PRE_CONTACT_BUFFER
-          const strength = proximity * PUSH_DISTANCE
-          const nx = dx / distance
-          const ny = dy / distance
+        if (body.y < 0) {
+          body.y = 0
+          if (body.vy < 0) {
+            body.vy = -body.vy * BOUNCE_RESTITUTION
+          }
+        }
 
-          moveBy(circle, nx * strength, ny * strength)
+        if (body.y > maxY) {
+          body.y = maxY
+          if (body.vy > 0) {
+            body.vy = -body.vy * BOUNCE_RESTITUTION
+          }
+        }
 
-          gsap.to(circle, {
-            scale: 1.08,
-            duration: 0.1,
-            ease: 'power2.out',
-            overwrite: true,
+        limitSpeed(body)
+      }
+
+      const renderBodies = () => {
+        bodies.forEach(body => {
+          gsap.set(body.element, {
+            x: body.x,
+            y: body.y,
           })
         })
       }
 
-      let activeCircle = null
+      const resolvePairCollision = (firstBody, secondBody) => {
+        const dx = secondBody.x - firstBody.x
+        const dy = secondBody.y - firstBody.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
 
-      const runPhysicsStep = () => {
-        if (!activeCircle) {
+        if (distance >= COLLISION_DISTANCE) {
           return
         }
 
-        nudgeNeighbors(activeCircle)
-        resolveOverlaps(activeCircle)
+        const safeDistance = distance === 0 ? 0.0001 : distance
+        const nx = dx / safeDistance
+        const ny = dy / safeDistance
+        const overlap = COLLISION_DISTANCE - safeDistance
+
+        if (firstBody.isDragging && !secondBody.isDragging) {
+          secondBody.x += nx * overlap
+          secondBody.y += ny * overlap
+        } else if (secondBody.isDragging && !firstBody.isDragging) {
+          firstBody.x -= nx * overlap
+          firstBody.y -= ny * overlap
+        } else {
+          const halfOverlap = overlap / 2
+          firstBody.x -= nx * halfOverlap
+          firstBody.y -= ny * halfOverlap
+          secondBody.x += nx * halfOverlap
+          secondBody.y += ny * halfOverlap
+        }
+
+        const relativeVelocityX = secondBody.vx - firstBody.vx
+        const relativeVelocityY = secondBody.vy - firstBody.vy
+        const velocityAlongNormal = relativeVelocityX * nx + relativeVelocityY * ny
+
+        if (velocityAlongNormal > 0) {
+          applyWallBounce(firstBody)
+          applyWallBounce(secondBody)
+          return
+        }
+
+        const impulseMagnitude = (-(1 + BOUNCE_RESTITUTION) * velocityAlongNormal) / 2
+        const impulseX = impulseMagnitude * nx
+        const impulseY = impulseMagnitude * ny
+
+        if (!firstBody.isDragging) {
+          firstBody.vx -= impulseX
+          firstBody.vy -= impulseY
+          limitSpeed(firstBody)
+        }
+
+        if (!secondBody.isDragging) {
+          secondBody.vx += impulseX
+          secondBody.vy += impulseY
+          limitSpeed(secondBody)
+        }
+
+        applyWallBounce(firstBody)
+        applyWallBounce(secondBody)
+      }
+
+      const resolveAllCollisions = () => {
+        for (let firstIndex = 0; firstIndex < bodies.length; firstIndex += 1) {
+          for (
+            let secondIndex = firstIndex + 1;
+            secondIndex < bodies.length;
+            secondIndex += 1
+          ) {
+            resolvePairCollision(bodies[firstIndex], bodies[secondIndex])
+          }
+        }
+      }
+
+      const advanceBodies = frameRatio => {
+        const damping = Math.pow(VELOCITY_DAMPING, frameRatio)
+
+        bodies.forEach(body => {
+          if (body.isDragging) {
+            return
+          }
+
+          body.x += body.vx * frameRatio
+          body.y += body.vy * frameRatio
+          body.vx *= damping
+          body.vy *= damping
+
+          if (Math.abs(body.vx) < STOP_SPEED) {
+            body.vx = 0
+          }
+
+          if (Math.abs(body.vy) < STOP_SPEED) {
+            body.vy = 0
+          }
+
+          applyWallBounce(body)
+        })
+      }
+
+      let lastTickTimestamp = performance.now()
+
+      const runPhysicsStep = () => {
+        const now = performance.now()
+        const elapsed = Math.min(now - lastTickTimestamp, 48)
+        lastTickTimestamp = now
+        const frameRatio = Math.max(elapsed / 16.67, 0.5)
+        const substepRatio = frameRatio / PHYSICS_SUBSTEPS
+
+        for (let step = 0; step < PHYSICS_SUBSTEPS; step += 1) {
+          advanceBodies(substepRatio)
+          resolveAllCollisions()
+        }
+
+        renderBodies()
       }
 
       gsap.ticker.add(runPhysicsStep)
@@ -197,9 +247,21 @@ export default function DraggableShapeSandbox() {
         bounds: areaElement,
         edgeResistance: 0.9,
         onPress() {
-          activeCircle = this.target
-          gsap.set(this.target, { zIndex: 2 })
-          gsap.to(this.target, {
+          const body = bodyByElement.get(this.target)
+
+          if (!body) {
+            return
+          }
+
+          body.isDragging = true
+          body.vx = 0
+          body.vy = 0
+          body.lastX = body.x
+          body.lastY = body.y
+          body.lastTimestamp = performance.now()
+
+          gsap.set(body.element, { zIndex: 2 })
+          gsap.to(body.element, {
             scale: 1.12,
             duration: 0.12,
             ease: 'power2.out',
@@ -207,14 +269,45 @@ export default function DraggableShapeSandbox() {
           })
         },
         onDrag() {
-          runPhysicsStep()
+          const body = bodyByElement.get(this.target)
+
+          if (!body) {
+            return
+          }
+
+          const now = performance.now()
+          const elapsed = Math.max(now - body.lastTimestamp, 1)
+          const nextX = Number(this.x)
+          const nextY = Number(this.y)
+          const frameScale = (16.67 / elapsed) * DRAG_VELOCITY_SCALE
+
+          body.vx = (nextX - body.lastX) * frameScale
+          body.vy = (nextY - body.lastY) * frameScale
+          limitSpeed(body)
+
+          body.x = nextX
+          body.y = nextY
+          body.lastX = nextX
+          body.lastY = nextY
+          body.lastTimestamp = now
+          applyWallBounce(body)
+
+          resolveAllCollisions()
+          resolveAllCollisions()
+          renderBodies()
         },
         onRelease() {
-          activeCircle = null
-          gsap.set(this.target, { zIndex: 1 })
-          clampWithinBounds(this.target)
-          resolveOverlaps(null)
-          gsap.to(this.target, {
+          const body = bodyByElement.get(this.target)
+
+          if (!body) {
+            return
+          }
+
+          body.isDragging = false
+          body.lastTimestamp = 0
+
+          gsap.set(body.element, { zIndex: 1 })
+          gsap.to(body.element, {
             scale: 1,
             duration: 0.2,
             ease: 'power2.out',
@@ -224,8 +317,14 @@ export default function DraggableShapeSandbox() {
       })
 
       const handleResize = () => {
-        circleElements.forEach(circle => clampWithinBounds(circle))
-        resolveOverlaps(null)
+        bodies.forEach(body => {
+          body.x = clamp(body.x, 0, getMaxX())
+          body.y = clamp(body.y, 0, getMaxY())
+          applyWallBounce(body)
+        })
+
+        resolveAllCollisions()
+        renderBodies()
       }
 
       window.addEventListener('resize', handleResize)
@@ -243,7 +342,7 @@ export default function DraggableShapeSandbox() {
   return (
     <Box py={4}>
       <Text fontWeight="medium" mb={3}>
-        Drag circles to nudge nearby circles.
+        Drag and fling circles. Collisions bounce and chain.
       </Text>
 
       <Box
