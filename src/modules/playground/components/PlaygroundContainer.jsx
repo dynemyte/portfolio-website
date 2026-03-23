@@ -1,11 +1,11 @@
-import { Container, Heading } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
+import HeroSection from './HeroSection'
+import heroImage from '../../../assets/images/MysticalCat.png'
 
 export default function PlaygroundContainer() {
   return (
-    <Container maxW="6xl" py={{ base: 6, md: 8 }}>
-      <Heading as="h1" size="xl">
-        Test Page Ready
-      </Heading>
-    </Container>
+    <Box mx="-8" my="-8">
+      <HeroSection imageSrc={heroImage} imageAlt="Landing page hero artwork" />
+    </Box>
   )
 }
