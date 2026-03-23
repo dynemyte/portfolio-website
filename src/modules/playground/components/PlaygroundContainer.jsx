@@ -1,30 +1,11 @@
-import { Box, Container, Heading, Text } from '@chakra-ui/react'
-import DraggableShapeSandbox from './DraggableShapeSandbox'
-import RollingShapeTrack from './RollingShapeTrack'
-import WigglyStarTrack from './WigglyStarTrack'
+import { Container, Heading } from '@chakra-ui/react'
 
 export default function PlaygroundContainer() {
   return (
     <Container maxW="6xl" py={{ base: 6, md: 8 }}>
       <Heading as="h1" size="xl">
-        Playground
+        Test Page Ready
       </Heading>
-
-      <Box mt={6}>
-        <Text color="gray.600">GSAP animation playground ready.</Text>
-      </Box>
-
-      <Box mt={8}>
-        <RollingShapeTrack />
-      </Box>
-
-      <Box mt={4}>
-        <WigglyStarTrack />
-      </Box>
-
-      <Box mt={4}>
-        <DraggableShapeSandbox />
-      </Box>
     </Container>
   )
 }
