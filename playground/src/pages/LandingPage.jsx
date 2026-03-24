@@ -6,8 +6,8 @@ import SpinAnimation from '../components/SpinAnimation'
 import ScrollTriggerAnimation from '../components/ScrollTriggerAnimation'
 
 export default function LandingPage() {
-  const topRowCards = ['Hello', 'Design', 'System']
-  const bottomRowCards = ['Tokens', 'Components', 'Motion']
+  const topRowCards = ['Hello', 'We', 'Are']
+  const bottomRowCards = ['Here', 'To', 'Help']
 
   return (
     <Box as="main" minH="220vh" p="2rem" display="flex" justifyContent="center">
