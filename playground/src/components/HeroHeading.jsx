@@ -1,6 +1,6 @@
 import { Heading } from '@chakra-ui/react'
 
-export default function ReferenceHeading() {
+export default function HeroHeading() {
   return (
     <Heading
       m={0}
