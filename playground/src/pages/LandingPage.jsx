@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { Box, Flex, SimpleGrid, Text } from '@chakra-ui/react'
 import ReferenceHeading from '../components/ReferenceHeading'
 import Card from '../components/Card'
 import SyncIcon from '../components/SyncIcon'
@@ -6,6 +6,9 @@ import SpinAnimation from '../components/SpinAnimation'
 import ScrollTriggerAnimation from '../components/ScrollTriggerAnimation'
 
 export default function LandingPage() {
+  const topRowCards = ['Hello', 'Design', 'System']
+  const bottomRowCards = ['Tokens', 'Components', 'Motion']
+
   return (
     <Box as="main" minH="220vh" p="2rem" display="flex" justifyContent="center">
       <Box as="section" w="100%" maxW="960px">
@@ -46,15 +49,28 @@ export default function LandingPage() {
           </SpinAnimation>
         </Flex>
 
-        <ScrollTriggerAnimation
-          mt="14vh"
-          display="inline-block"
-          start="top 85%"
-          once={false}
-        >
-          <Card>
-            <h1 style={{ margin: 0, fontSize: '2.15rem', lineHeight: 1.05 }}>Hello</h1>
-          </Card>
+        <ScrollTriggerAnimation mt="14vh" start="top 85%" once={false}>
+          <SimpleGrid columns={{ base: 1, md: 3 }} gap="1.25rem">
+            {topRowCards.map(label => (
+              <Card key={label}>
+                <h1 style={{ margin: 0, fontSize: '2.15rem', lineHeight: 1.05 }}>
+                  {label}
+                </h1>
+              </Card>
+            ))}
+          </SimpleGrid>
+        </ScrollTriggerAnimation>
+
+        <ScrollTriggerAnimation mt="2rem" start="top 80%" once={false}>
+          <SimpleGrid columns={{ base: 1, md: 3 }} gap="1.25rem">
+            {bottomRowCards.map(label => (
+              <Card key={label}>
+                <h1 style={{ margin: 0, fontSize: '2.15rem', lineHeight: 1.05 }}>
+                  {label}
+                </h1>
+              </Card>
+            ))}
+          </SimpleGrid>
         </ScrollTriggerAnimation>
       </Box>
     </Box>

@@ -7,8 +7,8 @@ export default function Card(props) {
       borderColor="blackAlpha.200"
       bg="white"
       boxShadow="none"
-      w="clamp(18rem, 40vw, 26rem)"
-      minH="8.5rem"
+      w="100%"
+      minH="10rem"
     >
       <ChakraCard.Body
         px="1.5rem"
@@ -17,6 +17,8 @@ export default function Card(props) {
         fontWeight="500"
         display="flex"
         alignItems="center"
+        justifyContent="center"
+        textAlign="center"
       >
         {props.children}
       </ChakraCard.Body>
