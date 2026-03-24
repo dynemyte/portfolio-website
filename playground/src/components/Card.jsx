@@ -1,8 +1,8 @@
-import { Card } from '@chakra-ui/react'
+import { Card as ChakraCard } from '@chakra-ui/react'
 
-export default function HelloCard(props) {
+export default function Card(props) {
   return (
-    <Card.Root
+    <ChakraCard.Root
       borderRadius="12px"
       borderColor="blackAlpha.200"
       bg="white"
@@ -10,7 +10,7 @@ export default function HelloCard(props) {
       w="clamp(18rem, 40vw, 26rem)"
       minH="8.5rem"
     >
-      <Card.Body
+      <ChakraCard.Body
         px="1.5rem"
         py="1.1rem"
         fontSize="1.2rem"
@@ -19,7 +19,7 @@ export default function HelloCard(props) {
         alignItems="center"
       >
         {props.children}
-      </Card.Body>
-    </Card.Root>
+      </ChakraCard.Body>
+    </ChakraCard.Root>
   )
 }

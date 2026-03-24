@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import ReferenceHeading from '../components/ReferenceHeading'
-import HelloCard from '../components/HelloCard'
+import Card from '../components/Card'
 import SyncIcon from '../components/SyncIcon'
 import SpinAnimation from '../components/SpinAnimation'
-import SlideUpAnimation from '../components/SlideUpAnimation'
+import ScrollTriggerAnimation from '../components/ScrollTriggerAnimation'
 
 export default function LandingPage() {
   return (
@@ -46,11 +46,16 @@ export default function LandingPage() {
           </SpinAnimation>
         </Flex>
 
-        <SlideUpAnimation mt="14vh" display="inline-block">
-          <HelloCard>
+        <ScrollTriggerAnimation
+          mt="14vh"
+          display="inline-block"
+          start="top 85%"
+          once={false}
+        >
+          <Card>
             <h1 style={{ margin: 0, fontSize: '2.15rem', lineHeight: 1.05 }}>Hello</h1>
-          </HelloCard>
-        </SlideUpAnimation>
+          </Card>
+        </ScrollTriggerAnimation>
       </Box>
     </Box>
   )
